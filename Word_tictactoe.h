@@ -86,6 +86,7 @@ bool Word_tictactoe::update_board(int x, int y, char mark)
         this->n_moves--;
         this->board[x][y] = ' ';
         return true;
+
     }
     else{
         if ((x >= 0 && x <= 2 && y >= 0 && y <= 2) && board[x][y] == ' ')
@@ -101,15 +102,23 @@ bool Word_tictactoe::update_board(int x, int y, char mark)
 
 void Word_tictactoe::display_board()
 {
-    for (int i = 0; i < 3; i++)
-    {
-        cout << "\n| ";
-        for (int j = 0; j < 3; j++)
-        {
-            cout << "(" << i << "," << j << ")" << setw(2) << board[i][j] << " | ";
+    cout << "  " ;
+    for (int i = 0 ; i < this->columns; i++)
+        cout << "   " << i << "  ";
+    for (int i = 0; i < this->rows; i++) {
+        cout << "\n" << i << " |";
+        for (int j = 0; j < this->columns; j++) {
+            if (this->board[i][j] == 0) {
+                cout << "     ";
+            }
+            else {
+                cout << "  " << this->board[i][j] << "  " ;
+            }
+            cout << "|" ;
         }
-        cout << "\n-----------------------------\n";
+        cout << "\n   ------------------";
     }
+    cout << endl;
 }
 
 class Word_tictactoe_player : public Player<char>
