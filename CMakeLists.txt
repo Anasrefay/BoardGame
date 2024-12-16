@@ -9,4 +9,5 @@ add_executable(c__ A2_S6_20230260_sheetpb5.cpp
         ultimateTicTacToeHeader.h
         NumericalTicTacToe.h
         "../Assignment Demo/MinMaxPlayer.h"
-        NumericalMinMaxPlayer.h)
+        NumericalMinMaxPlayer.h
+)

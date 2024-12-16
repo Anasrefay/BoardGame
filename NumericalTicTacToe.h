@@ -6,7 +6,7 @@
 
 bool playerisAI[2] = {false,false} ;
 int idx = 1 ;
-
+vector<int>visitednumbers(10,0) ;
 
 template <typename T>
 class NumericalBoard:public Board<T> {
@@ -66,89 +66,18 @@ vector<int>vis(10) ;
 
 template <typename T>
 bool NumericalBoard<T>::update_board(int x, int y, T mark) {
-    idx = !idx ;
     // Only update if move is valid
     if (!(x < 0 || x >= this->rows || y < 0 || y >= this->columns) && (this->board[x][y] == 0|| mark == 0)) {
         if (mark == 0){
             this->n_moves--;
             this->board[x][y] = 0;
+            idx = !idx ;
         }
         else {
             this->n_moves++;
-            if (!playerisAI[idx]){
-                if (mark==1) {
-                    vector<int>even ;
-                    for (int i = 2 ; i <= 8 ; i+=2) {
-                        if (!vis[i])
-                            even.push_back(i);
-                    }
-                    cout << "Choose a number From this list : ";
-                    for (int i = 0 ; i < even.size(); ++i) {
-                        cout << even[i] << " ";
-                    }
-                    cout << endl ;
-                    int number ;
-                    cin >> number ;
-                    bool found = false;
-                    while (!found) {
-                        for (int i = 0 ; i < even.size(); ++i) {
-                            if (even[i] == number) {
-                                found = true;
-                                this->board[x][y] = number;
-                                vis[even[i]] = true;
-                            }
-                        }
-                        if (!found) {
-                            cout << number << " is not in your list !!" << endl ;
-                            cout << "Choose a number From this list : ";
-                            for (int i = 0 ; i < even.size(); ++i) {
-                                cout << even[i] << " ";
-                            }
-                            cout << endl ;
-                            cin >> number ;
-                        }
-                    }
-                }
-                else if (mark==2) {
-                    vector<int>odd ;
-                    for (int i = 1 ; i <= 9 ; i+=2) {
-                        if (!vis[i])
-                            odd.push_back(i);
-                    }
-                    cout << "Choose a number From this list : ";
-                    for (int i = 0 ; i < odd.size(); ++i) {
-                        cout << odd[i] << " ";
-                    }
-                    cout << endl ;
-                    int number ;
-                    cin >> number ;
-                    bool found = false;
-                    while (!found) {
-                        for (int i = 0 ; i < odd.size(); ++i) {
-                            if (odd[i] == number) {
-                                found = true;
-                                this->board[x][y] = number;
-                                vis[odd[i]] = true;
-                            }
-                        }
-                        if (!found) {
-                            cout << number << " is not in your list !!" << endl ;
-                            cout << "Choose a number From this list : ";
-                            for (int i = 0 ; i < odd.size(); ++i) {
-                                cout << odd[i] << " ";
-                            }
-                            cout << endl ;
-                            cin >> number ;
-                        }
-                    }
-                }
-            }else {
-                this->n_moves++;
-                this->board[x][y] = mark;
-                return true;
-            }
+            this->board[x][y] = mark;
+            idx = !idx ;
         }
-
         return true;
     }
     return false;
@@ -199,6 +128,14 @@ bool NumericalBoard<T>::is_win() {
 // Return true if 9 moves are done and no winner
 template <typename T>
 bool NumericalBoard<T>::is_draw() {
+    bool vis = false ;
+    for (int i = 1 ; i <= 9 ; ++i) {
+        if (!visitednumbers[i]) {
+            vis = true ;
+            break ;
+        }
+    }
+    if (!vis)return true ;
     return (this->n_moves == 9 && !is_win());
 }
 
@@ -217,6 +154,56 @@ template <typename T>
 void NumericalPlayer<T>::getmove(int& x, int& y) {
     cout << "\nPlease enter your move x and y (0 to 2) separated by spaces: ";
     cin >> x >> y;
+    vector<int>numbers ;
+    if (idx) {
+        cout << "choose a number from the list : \n" ;
+        for (int i = 1 ; i <= 9 ; i += 2) {
+            if (!visitednumbers[i]) {
+                cout << i << " " ;
+                numbers.push_back(i) ;
+            }
+        }
+        cout << endl;
+        int choice ;
+        bool found = false ;
+        while (!found){
+            cin >> choice ;
+            for (int i = 0 ; i < numbers.size(); ++i) {
+                if (choice==numbers[i]) {
+                    found = true ;
+                    break ;
+                }
+            }
+            if (!found)
+                cout << "this number is not in your list\n" ;
+        }
+        NumericalPlayer<int>::symbol = choice ;
+        visitednumbers[choice] = 1 ;
+    }else {
+        cout << "choose a number from the list : \n" ;
+        for (int i = 2 ; i <= 9 ; i += 2) {
+            if (!visitednumbers[i]) {
+                cout << i << " " ;
+                numbers.push_back(i) ;
+            }
+        }
+        cout << endl;
+        int choice ;
+        bool found = false ;
+        while (!found){
+            cin >> choice ;
+            for (int i = 0 ; i < numbers.size(); ++i) {
+                if (choice==numbers[i]) {
+                    found = true ;
+                    break ;
+                }
+            }
+            if (!found)
+                cout << "this number is not in your list\n" ;
+        }
+        NumericalPlayer<int>::symbol = choice ;
+        visitednumbers[choice] = 1 ;
+    }
 }
 
 // Constructor for X_O_Random_Player

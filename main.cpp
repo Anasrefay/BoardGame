@@ -103,7 +103,9 @@ void NumericalTicTacToeGame() {
             players[0] = new NumericalRandom_Player<int>(1);
         break;
         case 3:
-            // players[0] = new NumericalMinMax_Player<int>(1) ;
+            players[0] = new NumericalMinMax_Player<int>(1) ;
+            players[0]->setBoard(B) ;
+            break;
         default:
             cout << "Invalid choice for Player 1. Exiting the game.\n";
         return ;
@@ -124,6 +126,10 @@ void NumericalTicTacToeGame() {
         case 2:
             players[1] = new NumericalRandom_Player<int>(2);
         break;
+        case 3:
+            players[1] = new NumericalMinMax_Player<int>(1) ;
+            players[1]->setBoard(B) ;
+            break;
         default:
             cout << "Invalid choice for Player 2. Exiting the game.\n";
         return ;
