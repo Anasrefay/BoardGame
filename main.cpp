@@ -5,8 +5,49 @@
 #include "FourInRowMinMax_Player.h"
 #include "NumericalMinMaxPlayer.h"
 #include "ultimateTicTacToeHeader.h"
+#include "5x5X_O.h"
 
 using namespace std;
+
+
+void Game5x5(){
+    int choice;
+    Player<char>* players[2];
+    Board_5x5_XO<char>* B = new Board_5x5_XO<char>();
+    string playerXName, playerOName;
+
+    cout << "Welcome to FCAI 5x5 Tic Tac Toe Game! :)\n";
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n1. Human\n2. Random Computer\n3. AI Player\n";
+    cin >> choice;
+
+    if (choice == 1)
+        players[0] = new Player_5x5_XO<char>(playerXName, 'X');
+    else if (choice == 2)
+        players[0] = new X_O_Random_Player<char>('X');
+    // else if (choice == 3)
+    //     players[0] = new X_O_MinMax_Player<char>('X');
+
+    cout << "Enter Player O name: ";
+    cin >> playerOName;
+    cout << "Choose Player O type:\n1. Human\n2. Random Computer\n3. AI Player\n";
+    cin >> choice;
+
+    if (choice == 1)
+        players[1] = new Player_5x5_XO<char>(playerOName, 'O');
+    else if (choice == 2)
+        players[1] = new X_O_Random_Player<char>('O');
+    // else if (choice == 3)
+    //     players[1] = new X_O_MinMax_Player<char>('O'); 
+
+    GameManager<char> game(B, players);
+    game.run();
+
+    delete B;
+    for (int i = 0; i < 2; ++i) delete players[i];
+
+}
 
 void FourInRowGame() {
     int choice;
