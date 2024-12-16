@@ -40,9 +40,9 @@ public:
     void getmove(int& x, int& y);
 };
 template <typename T>
-class X_O_Random_Player : public RandomPlayer<T> {
+class Random_5x5_Player : public RandomPlayer<T> {
 public:
-    X_O_Random_Player(T symbol);
+    Random_5x5_Player(T symbol);
     void getmove(int& x, int& y);
 };
 template <typename T>
@@ -126,7 +126,7 @@ void Board_5x5_XO<T>::update_score(int x, int y, T symbol) {
             int x2 = x + c.first * k;
             int y2 = y + c.second * k;
             if (x2 >= 0 && x2 < this->rows && y2 >= 0 && y2 < this->columns
-                && this->board[nx][ny] == toupper(symbol)) {
+                && this->board[x2][y2] == toupper(symbol)) {
                 count++;
             }
             else {
@@ -137,7 +137,7 @@ void Board_5x5_XO<T>::update_score(int x, int y, T symbol) {
             int x2 = x - c.first * k;
             int y2 = y - c.second * k;
             if (x2 >= 0 && x2 < this->rows && y2 >= 0 && y2 < this->columns
-                && this->board[nx][ny] == toupper(symbol)) {
+                && this->board[x2][y2] == toupper(symbol)) {
                 count++;
             }
             else {
@@ -201,14 +201,14 @@ bool Board_5x5_XO<T>::is_draw() {
     return (this->n_moves == 24 && !is_win());
 }
 template <typename T>
-X_O_Random_Player<T>::X_O_Random_Player(T symbol) : RandomPlayer<T>(symbol) {
+Random_5x5_Player<T>::Random_5x5_Player(T symbol) : RandomPlayer<T>(symbol) {
     this->dimension = 5;
     this->name = "Random Computer Player";
     srand(static_cast<unsigned int>(time(0)));
 }
 
 template <typename T>
-void X_O_Random_Player<T>::getmove(int& x, int& y) {
+void Random_5x5_Player<T>::getmove(int& x, int& y) {
     x = rand() % this->dimension;
     y = rand() % this->dimension;
 }
