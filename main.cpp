@@ -1,53 +1,17 @@
 #include <iostream>
 #include "BoardGame_Classes.h"
-#include "Four_in_row.h"
-#include "NumericalTicTacToe.h"
-#include "FourInRowMinMax_Player.h"
-#include "NumericalMinMaxPlayer.h"
-#include "ultimateTicTacToeHeader.h"
-#include "5x5X_O.h"
+// #include "Four_in_row.h"
+// #include "NumericalTicTacToe.h"
+// #include "FourInRowMinMax_Player.h"
+// #include "NumericalMinMaxPlayer.h"
+// #include "ultimateTicTacToeHeader.h"
+#include "4x4tictactoe.h"
+#include "pyramic.h"
+#include "pyramic_AI.h"
+#include "Word_tictactoe.h"
+#include "Word_tictactoe_AI.h"
 
 using namespace std;
-
-
-void Game5x5(){
-    int choice;
-    Player<char>* players[2];
-    Board_5x5_XO<char>* B = new Board_5x5_XO<char>();
-    string playerXName, playerOName;
-
-    cout << "Welcome to FCAI 5x5 Tic Tac Toe Game! :)\n";
-    cout << "Enter Player X name: ";
-    cin >> playerXName;
-    cout << "Choose Player X type:\n1. Human\n2. Random Computer\n3. AI Player\n";
-    cin >> choice;
-
-    if (choice == 1)
-        players[0] = new Player_5x5_XO<char>(playerXName, 'X');
-    else if (choice == 2)
-        players[0] = new X_O_Random_Player<char>('X');
-    // else if (choice == 3)
-    //     players[0] = new X_O_MinMax_Player<char>('X');
-
-    cout << "Enter Player O name: ";
-    cin >> playerOName;
-    cout << "Choose Player O type:\n1. Human\n2. Random Computer\n3. AI Player\n";
-    cin >> choice;
-
-    if (choice == 1)
-        players[1] = new Player_5x5_XO<char>(playerOName, 'O');
-    else if (choice == 2)
-        players[1] = new X_O_Random_Player<char>('O');
-    // else if (choice == 3)
-    //     players[1] = new X_O_MinMax_Player<char>('O'); 
-
-    GameManager<char> game(B, players);
-    game.run();
-
-    delete B;
-    for (int i = 0; i < 2; ++i) delete players[i];
-
-}
 
 void FourInRowGame() {
     int choice;
@@ -247,9 +211,200 @@ void ultimateTicTacToe() {
 
 }
 
+void PyramicTicTacToe() {
+
+    int choice;
+    Player<char>* players[2];
+    Board<char>* B = new Pyramic();
+    string playerXName, player2Name;
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cout << "3. Smart Computer (AI)\n";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            players[0] = new pyramic_player(playerXName, 'X');
+            break;
+        case 2:
+            players[0] = new pyramic_Random('X');
+            break;
+        case 3:
+            players[0] = new pyramic_AI('X');
+            players[0]->setBoard(B);
+            break;
+        default:
+            cout << "Invalid choice for Player 1. Exiting the game.\n";
+            return ;
+    }
+
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cout << "3. Smart Computer (AI)\n";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            players[1] = new pyramic_player(player2Name, 'O');
+            break;
+        case 2:
+            players[1] = new pyramic_Random('O');
+            break;
+        case 3:
+            players[1] = new pyramic_AI('O');
+            players[1]->setBoard(B);
+            break;
+        default:
+            cout << "Invalid choice for Player 2. Exiting the game.\n";
+            return ;
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> x_o_game(B, players);
+    x_o_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+
+    return ;
+
+}
+
+void _4x4_TicTacToe() {
+
+    int choice;
+    Player<char>* players[2];
+    Board<char>* B = new _4x4tictactoe();
+    string playerXName, player2Name;
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            players[0] = new _4x4tictactoe_player(playerXName, 'X');
+            break;
+        case 2:
+            players[0] = new _4x4tictactoe_Random('X');
+            break;
+        default:
+            cout << "Invalid choice for Player 1. Exiting the game.\n";
+            return ;
+    }
+
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            players[1] = new _4x4tictactoe_player(player2Name, 'O');
+            break;
+        case 2:
+            players[1] = new _4x4tictactoe_Random('O');
+            break;
+        default:
+            cout << "Invalid choice for Player 2. Exiting the game.\n";
+            return ;
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> x_o_game(B, players);
+    x_o_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+    return ;
+}
+
+void Wordtictactoe() {
+
+    int choice;
+    Player<char>* players[2];
+    Board<char>* B = new Word_tictactoe();
+    string playerXName, player2Name;
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cout << "3. Smart Computer (AI)\n";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            players[0] = new Word_tictactoe_player(playerXName, 'X');
+            break;
+        case 2:
+            players[0] = new Word_tictactoe_Random('X');
+            break;
+        case 3:
+            players[0] = new Word_tictactoe_AI('X');
+            players[0]->setBoard(B);
+            break;
+        default:
+            cout << "Invalid choice for Player 1. Exiting the game.\n";
+            return ;
+    }
+
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cout << "3. Smart Computer (AI)\n";
+    cin >> choice;
+    switch(choice) {
+        case 1:
+            players[1] = new Word_tictactoe_player(player2Name, 'O');
+            break;
+        case 2:
+            players[1] = new Word_tictactoe_Random('O');
+            break;
+        case 3:
+            players[1] = new Word_tictactoe_AI('O');
+            players[1]->setBoard(B);
+            break;
+        default:
+            cout << "Invalid choice for Player 2. Exiting the game.\n";
+            return ;
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> x_o_game(B, players);
+    x_o_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+
+    return ;
+}
+
 void mainMenu() {
     cout << string(50,'#') << endl;
-    cout << "Board Games" << endl ;
+    cout << "                   Board Games" << endl ;
     cout << string(50,'#') << endl;
     cout << "1 - pyramic TicTacToe .\n" ;
     cout << "2 - Four in Row .\n" ;
@@ -257,33 +412,34 @@ void mainMenu() {
     cout << "4 - Word TicTacToe\n" ;
     cout << "5 - Numerical TicTacToe .\n" ;
     cout << "6 - Misere TicTacToe .\n" ;
-    cout << "7 - 4 x $ TicTacToe .\n" ;
+    cout << "7 - 4 x 4 TicTacToe .\n" ;
     cout << "8 - Ultimate TicTacToe. \n" ;
+    cout << "9 - Exit. \n" ;
     int choice ;
     cin >> choice ;
     if (choice==1) {
-        //
+        //PyramicTicTacToe() ;
     }
     else if (choice==2) {
-        FourInRowGame();
+        //FourInRowGame();
     }
     else if (choice==3) {
         //
     }
     else if (choice==4) {
-        //
+        Wordtictactoe();
     }
     else if (choice==5) {
-        NumericalTicTacToeGame();
+        //NumericalTicTacToeGame();
     }
     else if (choice==6) {
         //
     }
     else if (choice==7) {
-        //
+        //_4x4_TicTacToe();
     }
     else if (choice==8) {
-        ultimateTicTacToe();
+        //ultimateTicTacToe();
     }
     else if (choice==9) {
         cout << "Bye Bye ya user ya habibi. \n" ;
