@@ -1,10 +1,10 @@
 #include <iostream>
 #include "BoardGame_Classes.h"
-// #include "Four_in_row.h"
-// #include "NumericalTicTacToe.h"
-// #include "FourInRowMinMax_Player.h"
-// #include "NumericalMinMaxPlayer.h"
-// #include "ultimateTicTacToeHeader.h"
+#include "Four_in_row.h"
+#include "NumericalTicTacToe.h"
+#include "FourInRowMinMax_Player.h"
+#include "NumericalMinMaxPlayer.h"
+#include "ultimateTicTacToeHeader.h"
 #include "4x4tictactoe.h"
 #include "pyramic.h"
 #include "pyramic_AI.h"
@@ -14,124 +14,72 @@
 #include "5x5AI.h"
 #include "Misere.h"
 #include "MisereMinMaxPlayer.h"
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define BLUE "\033[34m"
-#define CYAN "\033[36m"
-#define YELLOW "\033[33m"
-#define MAGENTA "\033[35m"
-#define BOLD "\033[1m"
-#define WHITE "\033[37m"
-#define BOLD_BLUE "\033[1;34m"
-#define BOLD_GREEN "\033[1;32m"
 using namespace std;
 
 void MisereGame()
 {
-    Player<char> *players[2];
-    Misere_Board<char> *B = new Misere_Board<char>();
-    string playerXName, playerOName;
     int choice;
-    cout << BOLD_BLUE << "==========================================\n";
-    cout << "        Welcome to FCAI Misere Game        \n";
-    cout << "==========================================\n"
-         << RESET;
+    Player<char>* players[2];
+    Misere_Board<char>* B = new Misere_Board<char>();
+    string playerXName, player2Name;
 
-    cout << "\n"
-         << YELLOW << "Rules: In this version of Tic-Tac-Toe,\n"
-         << "the player who aligns 3 symbols (horizontally, vertically, or diagonally) loses!\n\n"
-         << RESET;
-
-    cout << GREEN << "Enter Player X name: " << RESET;
-    cin >> playerOName;
-
-    while (true)
-    {
-        cout << BLUE << "\nChoose Player X type:\n"
-             << RESET;
-        cout << "  1. Human\n";
-        cout << "  2. Random Computer\n";
-        cout << "  3. Smart Computer (AI)\n";
-        cout << "Your choice: ";
-        cin >> choice;
-
-        if (choice == 1)
-        {
-            players[0] = new Misere_Player<char>(playerOName, 'X');
-            break;
-        }
-        else if (choice == 2)
-        {
-            players[0] = new Misere_Random_Player<char>('X');
-            break;
-        }
-        else if (choice == 3)
-        {
-            players[0] = new Misere_MinMax_Player<char>('X');
-            players[0]->setBoard(B);
-            break;
-        }
-        else
-        {
-            cout << RED << "Invalid choice. Please choose again.\n"
-                 << RESET;
-        }
-    }
-
-    cout << GREEN << "\nEnter Player O name: " << RESET;
+    cout << "Welcome to FCAI Misere Game. :)\n";
+    cout << "Enter Player X name: ";
     cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cout << "3. Smart Computer (AI)\n";
+    cin >> choice;
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cout << "3. Smart Computer (AI)\n";
+    
 
-    while (true)
-    {
-        cout << BLUE << "\nChoose Player O type:\n"
-             << RESET;
-        cout << "  1. Human\n";
-        cout << "  2. Random Computer\n";
-        cout << "  3. Smart Computer (AI)\n";
-        cout << "Your choice: ";
-        cin >> choice;
 
-        if (choice == 1)
-        {
-            players[1] = new Misere_Player<char>(playerXName, 'O');
-            break;
-        }
-        else if (choice == 2)
-        {
-            players[1] = new Misere_Random_Player<char>('O');
-            break;
-        }
-        else if (choice == 3)
-        {
-            players[1] = new Misere_MinMax_Player<char>('O');
-            players[1]->setBoard(B);
-            break;
-        }
-        else
-        {
-            cout << RED << "Invalid choice. Please choose again.\n"
-                 << RESET;
-        }
+    switch (choice) {
+    case 1:
+        players[0] = new Misere_Player<char>(player2Name, 'X');
+        break;
+    case 2:
+        players[0] = new Misere_Random_Player<char>('X');
+        break;
+    case 3:
+        players[0] = new Misere_MinMax_Player<char>('X');
+        players[0]->setBoard(B);
+        break;
+    default:
+        cout << "Invalid choice for Player 1. Exiting the game.\n";
+        return 1;
     }
 
-    cout << BOLD_BLUE << "\n==========================================\n";
-    cout << "          Let the game begin!            \n";
-    cout << "==========================================\n"
-         << RESET;
+    cin >> choice;
 
+    switch (choice) {
+    case 1:
+        players[1] = new Misere_Player<char>(playerXName, 'O');
+        break;
+    case 2:
+        players[1] = new Misere_Random_Player<char>('O');
+        break;
+    case 3:
+        players[1] = new Misere_MinMax_Player<char>('O');
+        players[1]->setBoard(B);
+        break;
+    default:
+        cout << "Invalid choice for Player 2. Exiting the game.\n";
+        return 1;
+    }
     GameManager<char> x_o_game(B, players);
     x_o_game.run();
+
     delete B;
-    for (int i = 0; i < 2; ++i)
-    {
+    for (int i = 0; i < 2; ++i) {
         delete players[i];
     }
-
-    cout << BOLD_GREEN << "\n==========================================\n";
-    cout << "           Thank you for playing!         \n";
-    cout << "==========================================\n"
-         << RESET;
 }
 void Game5x5()
 {
@@ -140,27 +88,24 @@ void Game5x5()
     Board_5x5_XO<char> *B = new Board_5x5_XO<char>();
     string playerXName, playerOName;
 
-    cout << CYAN << "**********************************************\n";
-    cout << "*      " << BOLD << "Welcome to FCAI 5x5 Tic Tac Toe!" << RESET << CYAN << "      *\n";
-    cout << "**********************************************\n\n"
-         << RESET;
-
-    cout << MAGENTA << "Player X Setup:\n";
-    cout << YELLOW << "------------------------------------------------\n"
-         << RESET;
-    cout << GREEN << "Enter Player X name: " << RESET;
+    cout << "**********************************************\n";
+    cout << "*      " << "Welcome to FCAI 5x5 Tic Tac Toe!\n";
+    cout << "**********************************************\n\n";
+    cout << "Player X Setup:\n";
+    cout <<  "------------------------------------------------\n";
+    cout << "Enter Player X name: ";
     cin >> playerXName;
 
-    cout << BLUE << "\nChoose Player X type:\n";
+    cout <<"\nChoose Player X type:\n";
     cout << "  [1] Human\n";
     cout << "  [2] Random Computer\n";
     cout << "  [3] AI Player\n";
-    cout << GREEN << "Your choice: " << RESET;
+    cout <<"Your choice: ";
     cin >> choice;
 
     while (choice < 1 || choice > 3)
     {
-        cout << RED << "Invalid choice! Please enter 1, 2, or 3: " << RESET;
+        cout <<"Invalid choice! Please enter 1, 2, or 3: ";
         cin >> choice;
     }
 
@@ -171,25 +116,23 @@ void Game5x5()
     else if (choice == 3)
         players[0] = new MinMax_5x5_Player<char>('X');
 
-    cout << YELLOW << "\n------------------------------------------------\n"
-         << RESET;
+    cout <<"\n------------------------------------------------\n";
 
-    cout << MAGENTA << "Player O Setup:\n";
-    cout << YELLOW << "------------------------------------------------\n"
-         << RESET;
-    cout << GREEN << "Enter Player O name: " << RESET;
+    cout <<"Player O Setup:\n";
+    cout <<"------------------------------------------------\n"
+    cout <<"Enter Player O name: " ;
     cin >> playerOName;
 
-    cout << BLUE << "\nChoose Player O type:\n";
+    cout << "\nChoose Player O type:\n";
     cout << "  [1] Human\n";
     cout << "  [2] Random Computer\n";
     cout << "  [3] AI Player\n";
-    cout << GREEN << "Your choice: " << RESET;
+    cout <<"Your choice: " ;
     cin >> choice;
 
     while (choice < 1 || choice > 3)
     {
-        cout << RED << "Invalid choice! Please enter 1, 2, or 3: " << RESET;
+        cout << "Invalid choice! Please enter 1, 2, or 3: " ;
         cin >> choice;
     }
 
@@ -200,13 +143,10 @@ void Game5x5()
     else if (choice == 3)
         players[1] = new MinMax_5x5_Player<char>('O');
 
-    cout << YELLOW << "\n------------------------------------------------\n"
-         << RESET;
+    cout  << "\n------------------------------------------------\n";
 
-    cout << CYAN << BOLD << "Great! Let the game begin. May the best player win!\n"
-         << RESET;
-    cout << YELLOW << "------------------------------------------------\n\n"
-         << RESET;
+    cout << "Great! Let the game begin. May the best player win!\n";
+    cout << "------------------------------------------------\n\n";
 
     GameManager<char> game(B, players);
     game.run();
@@ -215,9 +155,8 @@ void Game5x5()
     for (int i = 0; i < 2; ++i)
         delete players[i];
 
-    cout << GREEN << "\nThank you for playing FCAI 5x5 Tic Tac Toe!\n";
-    cout << CYAN << "Goodbye and see you next time! :)\n"
-         << RESET;
+    cout << "\nThank you for playing FCAI 5x5 Tic Tac Toe!\n";
+    cout << "Goodbye and see you next time! :)\n";
 }
 
 void FourInRowGame()

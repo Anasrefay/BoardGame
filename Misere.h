@@ -1,6 +1,9 @@
 #ifndef MISERE_H
 #define MISERE_H
-
+#define COLOR_X "\033[38;5;81m"
+#define COLOR_O "\033[38;5;55m" 
+#define RESET_COLOR "\033[0m"   
+#define COLOR_GREEN "\033[1;32m"
 #include "BoardGame_Classes.h"
 
 template <typename T>
@@ -71,13 +74,30 @@ bool Misere_Board<T>::update_board(int x, int y, T mark) {
 
 template <typename T>
 void Misere_Board<T>::display_board() {
+    cout << "\n  0   1   2  \n";
+    cout << "-------------- \n";
+
     for (int i = 0; i < this->rows; i++) {
-        cout << "\n| ";
+        cout << i << " ";
         for (int j = 0; j < this->columns; j++) {
-            cout << "(" << i << "," << j << ")";
-            cout << setw(2) << this->board[i][j] << " |";
+            if (this->board[i][j] == 0) {
+                cout << "   ";
+            }
+            else {
+                if (this->board[i][j] == 'X') {
+                    cout << COLOR_X << " X " << RESET_COLOR;
+                }
+                else if (this->board[i][j] == 'O') {
+                    cout << COLOR_O << " O " << RESET_COLOR;
+                }
+            }
+            if (j != this->columns - 1) cout << "|";
         }
-        cout << "\n-----------------------------";
+        cout << endl;
+
+        if (i != this->rows - 1) {
+            cout << "  ---+---+---\n";
+        }
     }
     cout << endl;
 }

@@ -18,49 +18,29 @@ private:
     int evaluateBoard(T s);
     std::pair<int, int> getBestMove();
 };
-
 template <typename T>
 Misere_MinMax_Player<T>::Misere_MinMax_Player(T symbol) : Player<T>(symbol) {
     this->name = "AI Player";
 }
-
 template <typename T>
 void Misere_MinMax_Player<T>::getmove(int& x, int& y) {
     std::pair<int, int> bestMove = getBestMove();
     x = bestMove.first;
     y = bestMove.second;
 }
-
 template <typename T>
 int Misere_MinMax_Player<T>::evaluateBoard(T s) {
     int score = 0;
+
     for (int i = 0; i < 3; ++i) {
-        if (this->boardPtr->update_board(i, 0, s) && 
-            this->boardPtr->update_board(i, 1, s) && 
-            this->boardPtr->update_board(i, 2, s)) {
-            score += 1;
-        }
+        if (this->boardPtr->check_line({ {i, 0}, {i, 1}, {i, 2} }, s)) score += 1;
+        if (this->boardPtr->check_line({ {0, i}, {1, i}, {2, i} }, s)) score += 1;
     }
-    for (int i = 0; i < 3; ++i) {
-        if (this->boardPtr->update_board(0, i, s) && 
-            this->boardPtr->update_board(1, i, s) && 
-            this->boardPtr->update_board(2, i, s)) {
-            score += 1;
-        }
-    }
-    if (this->boardPtr->update_board(0, 0, s) &&
-        this->boardPtr->update_board(1, 1, s) && 
-        this->boardPtr->update_board(2, 2, s)) {
-        score += 1;
-    }
-    if (this->boardPtr->update_board(0, 2, s) &&
-        this->boardPtr->update_board(1, 1, s) && 
-        this->boardPtr->update_board(2, 0, s)) {
-        score += 1;
-    }
+    if (this->boardPtr->check_line({ {0, 0}, {1, 1}, {2, 2} }, s)) score += 1;
+    if (this->boardPtr->check_line({ {0, 2}, {1, 1}, {2, 0} }, s)) score += 1;
+
     return score;
 }
-
 template <typename T>
 int Misere_MinMax_Player<T>::calculateMinMax(T s, bool isMaximizing) {
     if (this->boardPtr->is_win()) {
